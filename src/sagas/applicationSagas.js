@@ -1,23 +1,15 @@
-import { takeEvery, takeLatest, put, call, take, actionChannel } from 'redux-saga/effects'
+import { takeEvery, put, call } from 'redux-saga/effects'
 import * as R from 'ramda'
-import { notify } from 'reapop'
+import { toast } from 'react-toastify'
 import * as applicationActions from '../actions/applicationActions'
-import {
-  ERROR,
-  ERROR_TITLE,
-  SUCCESS,
-  SUCCESS_TITLE,
-  WARN,
-  WARN_TITLE,
-} from '../const/messagesTypes'
+import { ERROR, SUCCESS, WARN } from '../const/messagesTypes'
 
-const DISMISSABLE = true
-const DISMISS_AFTER = 3000
+const POSITION = toast.POSITION.TOP_RIGHT
 
 function* sagaApplicationShowMessage({ payload }) {
   try {
     const type = R.prop('type', payload)
-    const message = R.prop('message', payload)
+    const message = R.propOr('Unknown error...', 'message')(payload)
 
     switch (type) {
       case SUCCESS:
@@ -39,13 +31,7 @@ function* sagaApplicationShowMessage({ payload }) {
 
 function* sagaApplicationShowMessageSuccess({ payload }) {
   try {
-    yield call(() => notify({
-      title: SUCCESS_TITLE,
-      message: payload,
-      status: 'success',
-      dismissible: DISMISSABLE,
-      dismissAfter: DISMISS_AFTER
-    }))
+    yield call(() => toast.success(payload, { position: POSITION }))
   } catch (error) {
     console.error('APP SAGA ERROR: ', error.message)
   }
@@ -53,13 +39,7 @@ function* sagaApplicationShowMessageSuccess({ payload }) {
 
 function* sagaApplicationShowMessageFail({ payload }) {
   try {
-    yield call(() => notify({
-      title: ERROR_TITLE,
-      message: payload,
-      status: 'error',
-      dismissible: DISMISSABLE,
-      dismissAfter: DISMISS_AFTER
-    }))
+    yield call(() => toast.error(payload, { position: POSITION }))
   } catch (error) {
     console.error('APP SAGA ERROR: ', error.message)
   }
@@ -67,12 +47,7 @@ function* sagaApplicationShowMessageFail({ payload }) {
 
 function* sagaApplicationShowMessageInfo({ payload }) {
   try {
-    yield call(() => notify({
-      message: payload,
-      status: 'info',
-      dismissible: DISMISSABLE,
-      dismissAfter: DISMISS_AFTER
-    }))
+    yield call(() => toast.info(payload, { position: POSITION }))
   } catch (error) {
     console.error('APP SAGA ERROR: ', error.message)
   }
@@ -80,13 +55,7 @@ function* sagaApplicationShowMessageInfo({ payload }) {
 
 function* sagaApplicationShowMessageWarning({ payload }) {
   try {
-    yield call(() => notify({
-      title: WARN_TITLE,
-      message: payload,
-      status: 'warning',
-      dismissible: DISMISSABLE,
-      dismissAfter: DISMISS_AFTER
-    }))
+    yield call(() => toast.warn(payload, { position: POSITION }))
   } catch (error) {
     console.error('APP SAGA ERROR: ', error.message)
   }

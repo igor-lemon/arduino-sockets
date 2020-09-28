@@ -1,6 +1,7 @@
 import React from 'react'
-import NotificationsSystem from 'reapop'
-import theme from 'reapop-theme-wybo'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+import 'antd/dist/antd.css'
 
 class App extends React.Component {
   render() {
@@ -8,7 +9,7 @@ class App extends React.Component {
     return (
       <>
         {children}
-        <NotificationsSystem theme={theme} />
+        <ToastContainer />
       </>
     )
   }

@@ -7,12 +7,10 @@ import './styles/index.scss'
 import * as serviceWorker from './serviceWorker'
 
 const history = createBrowserHistory()
-const store = configureStore({}, history)
+export const store = configureStore({}, history)
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Root history={history} store={store} />
-  </React.StrictMode>,
+  <Root history={history} store={store} />,
   document.getElementById('root')
 );
 
